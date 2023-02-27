@@ -1,0 +1,19 @@
+---
+
+# metadata.name
+source:
+  version: builtin
+  kind: HelmChartInflationGenerator
+  name: timescaledb-single
+
+  fieldPath: metadata.name
+
+targets:
+
+  # PrefixSuffixTransformer
+  - select:
+      version: builtin
+      kind: PrefixSuffixTransformer
+      name: generator-prefix
+    fieldPaths:
+      - prefix

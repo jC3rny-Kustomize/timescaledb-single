@@ -1,0 +1,46 @@
+---
+
+# releaseName
+source:
+  version: builtin
+  kind: HelmChartInflationGenerator
+  name: timescaledb-single
+  
+  fieldPath: releaseName
+
+targets:
+  # PrefixSuffixTransformer
+  - select:
+      version: builtin
+      kind: PrefixSuffixTransformer
+      name: sealed-secrets-prefix
+    fieldPaths:
+      - prefix
+
+  # Secret
+  - select:
+      version: v1
+      kind: Secret
+      name: sealed-secret
+    options:
+      create: true
+    fieldPaths:
+      - metadata.labels.[app.kubernetes.io/instance]
+      - metadata.labels.[app.kubernetes.io/name]
+  
+  # SealedSecret
+  - select:
+      group: bitnami.com
+      version: v1alpha1
+      kind: SealedSecret
+      name: sealed-secret
+    options:
+      create: true
+    fieldPaths:
+      # - metadata.labels.[app]
+      - metadata.labels.[app.kubernetes.io/instance]
+      - metadata.labels.[app.kubernetes.io/name]
+      # - metadata.labels.[cluster-name]
+      # - metadata.labels.[release]
+      - spec.template.metadata.labels.[app.kubernetes.io/instance]
+      - spec.template.metadata.labels.[argocd.argoproj.io/instance]

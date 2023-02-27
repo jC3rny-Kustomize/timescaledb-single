@@ -1,0 +1,17 @@
+---
+
+apiVersion: builtin
+kind: LabelTransformer
+metadata:
+  name: sealedSecretName
+
+labels:
+  app.kubernetes.io/component: patroni
+
+fieldSpecs:
+  - path: metadata/labels
+    create: true
+  
+  - kind: SealedSecret
+    path: spec/template/metadata/labels
+    create: true

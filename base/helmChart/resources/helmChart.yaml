@@ -1,0 +1,41 @@
+---
+
+apiVersion: builtin
+kind: HelmChartInflationGenerator
+metadata:
+  name: timescaledb-single
+
+# Chart
+name: timescaledb-single
+repo: https://charts.timescale.com
+chartHome: ../../.charts
+version: 0.27.5
+
+# Release
+releaseName: timescaledb-preview
+namespace: default
+
+# valuesFile 
+valuesFile: ./values.yaml
+
+# valuesInline
+valuesInline:
+  replicaCount: 3
+
+  patroni:
+    log:
+      level: DEBUG
+    postgresql:    
+      pg_hba:
+        - local     all             postgres                              peer
+        - local     all             all                                   md5
+        - hostnossl all             all                127.0.0.1/32       md5
+        - hostnossl all             all                ::1/128            md5
+        - hostnossl all,replication all                all                reject
+        - hostssl   all             all                127.0.0.1/32       md5
+        - hostssl   all             all                ::1/128            md5
+        - hostssl   replication     standby            all                md5
+        - hostssl   all             all                all                md5
+
+  prometheus:
+    enabled: true

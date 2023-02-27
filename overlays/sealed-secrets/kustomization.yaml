@@ -1,0 +1,29 @@
+---
+
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ../../base/helmChart
+
+
+patchesStrategicMerge:
+  - |-
+    apiVersion: builtin
+    kind: HelmChartInflationGenerator
+    metadata:
+      name: timescaledb-single
+
+    # valuesInline
+    valuesInline:
+      secrets:
+        # Selector used to provision your own Secret containing patroni configuration details
+        # This is mutually exclusive with `credentials` option and takes precedence over it.
+        # WARNING: Use this option with caution
+        credentialsSecretName: "-credentials-sealed"
+
+
+        # Selector used to provision your own Secret containing pgbackrest configuration details
+        # This is mutually exclusive with `pgbackrest` option and takes precedence over it.
+        # WARNING: Use this option with caution
+        pgbackrestSecretName: "-pgbackrest-sealed"

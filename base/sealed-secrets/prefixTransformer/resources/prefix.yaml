@@ -1,0 +1,12 @@
+---
+
+apiVersion: builtin
+kind: PrefixSuffixTransformer
+metadata:
+  name: generator-prefix
+
+prefix: preview
+
+fieldSpecs:
+  - kind: HelmChartInflationGenerator
+    path: metadata/name
